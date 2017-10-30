@@ -28,7 +28,7 @@
 <body>
     <div class="container">
         <div class="col-sm-12">
-            <form action="/insert-list" method="POST">
+            <form action="/{project}/insert-list" method="POST">
               {{ csrf_field() }}
               <input type="hidden" name="project_name" value="{{ $project }}">
               <input type="hidden" name="status" value="0">
@@ -46,9 +46,10 @@
                   <li class="list-group-item active">Todo Tasks</li>
                   @foreach($tasks as $task)
                     @if($task->status == 0)
-                    <li class="list-group-item list-group-item-warning">
-
+                   <a href="/{project}/update-list?id={{ $task->id }}" type="button" class="list-group-item list-group-item-warning">
+                        <span class="badge">{{ $task->created_at->diffForHumans() }}</span>
                     {{ $task->task }}
+                    </a>
                     </li>
                     @endif
                   @endforeach
@@ -61,8 +62,9 @@
                   @foreach($tasks as $task)
                     @if($task->status == 1)
                     <li class="list-group-item list-group-item-success">
+                        <span class="badge">{{ $task->updated_at->diffForHumans($task->created_at) }}</span>
 
-                    {{ $task->task }}
+                    <del>{{ $task->task }}</del>
                     </li>
                     @endif
                   @endforeach
